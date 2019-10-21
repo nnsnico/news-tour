@@ -1,26 +1,29 @@
+use news_tour::settings::Settings;
 use news_tour::slack::{Params, Slack};
 
-fn main() -> reqwest::Result<()> {
-    let token = match Params::create_token("NEWS_TOUR_TOKEN") {
+fn main() {
+    let settings = Settings::create_new().unwrap();
+
+    let token = match Params::create_token(&settings.slack.token_key) {
         Ok(v) => v,
         Err(err) => panic!("{}", err),
     };
-    let url = "https://slack.com";
+    let url = format!("{}://{}", settings.slack.scheme, settings.slack.domain);
     let params = Params {
         token: token,
-        text: "hogehoge".to_string(),
-        channel: "#news".to_string(),
-        as_user: true,
+        text: "This is test".to_string(),
+        channel: settings.bot.channel,
+        as_user: settings.bot.as_user,
     };
-
     let slack = Slack {
-        domain: url.to_string(),
+        domain: url,
         params: params,
     };
 
-    let mut response = slack.post_message("/api/chat.postMessage".to_string())?;
+    let response = slack.post_message(settings.endpoint.post_message);
 
-    response.copy_to(&mut std::io::stdout())?;
-
-    Ok(())
+    match response {
+        Ok(_) => println!("Success!!"),
+        Err(err) => println!("Failed: {}", err),
+    }
 }
