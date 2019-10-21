@@ -20,7 +20,6 @@ impl Slack {
     pub fn post_message(&self, endpoint: String) -> reqwest::Result<reqwest::Response> {
         let client = reqwest::Client::new();
         let url = reqwest::Url::parse(&format!("{}{}", self.domain, endpoint)).unwrap();
-        println!("{}", format!("{}{}", self.domain, endpoint));
         client
             .post(url)
             .header(
