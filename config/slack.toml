@@ -1,0 +1,11 @@
+[slack]
+scheme = "https"
+domain = "slack.com"
+token_key = "NEWS_TOUR_TOKEN"
+
+[bot]
+channel = "#news"
+as_user = true
+
+[endpoint]
+post_message = "/api/chat.postMessage"
