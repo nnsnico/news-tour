@@ -17,6 +17,14 @@ pub struct Bot {
 #[derive(Debug, Deserialize)]
 pub struct Endpoint {
     pub post_message: String,
+pub struct Api {
+    pub scheme: String,
+    pub domain: String,
+    pub endpoint: String,
+    pub country: String,
+    pub category: String,
+    pub page_size: usize,
+    pub api_key: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -24,12 +32,14 @@ pub struct Settings {
     pub slack: Slack,
     pub bot: Bot,
     pub endpoint: Endpoint,
+    pub api: Api,
 }
 
 impl Settings {
     pub fn create_new() -> Result<Settings, ConfigError> {
         let mut s = Config::new();
         s.merge(File::with_name("config/slack"))?;
+        s.merge(File::with_name("config/news"))?;
         s.try_into()
     }
 }
