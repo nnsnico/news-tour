@@ -21,13 +21,14 @@ fn main() {
 
     let news_response: ResponseNews = news.get_topic(settings.api.endpoint).unwrap();
 
+    println!("news:\n {:?}", news_response);
+
     let slack_params = slack::Params {
         token: env::var(&settings.slack.token_key).unwrap(),
         text: format!(
-            "{}\n{}\nPowered by News API\n{}",
+            "{}\nPowered by News API\n{}",
             news_response.articles[0].title,
-            news_response.articles[0].description,
-            news_response.articles[0].url
+            news_response.articles[0].url.as_ref().unwrap()
         ),
         channel: settings.bot.channel,
         as_user: settings.bot.as_user,

@@ -29,10 +29,10 @@ pub struct Articles {
     pub source: HashMap<String, Option<String>>,
     pub author: Option<String>,
     pub title: String,
-    pub description: String,
-    pub url: String,
+    pub description: Option<String>,
+    pub url: Option<String>,
     pub url_to_image: Option<String>,
-    pub published_at: String,
+    pub published_at: Option<String>,
     pub content: Option<String>,
 }
 
