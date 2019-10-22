@@ -5,6 +5,7 @@ use serde::Deserialize;
 pub struct Slack {
     pub scheme: String,
     pub domain: String,
+    pub post_message_endpoint: String,
     pub token_key: String,
 }
 
@@ -15,8 +16,6 @@ pub struct Bot {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Endpoint {
-    pub post_message: String,
 pub struct Api {
     pub scheme: String,
     pub domain: String,
@@ -31,7 +30,6 @@ pub struct Api {
 pub struct Settings {
     pub slack: Slack,
     pub bot: Bot,
-    pub endpoint: Endpoint,
     pub api: Api,
 }
 

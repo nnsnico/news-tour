@@ -1,11 +1,9 @@
 [slack]
 scheme = "https"
 domain = "slack.com"
+post_message_endpoint = "/api/chat.postMessage"
 token_key = "NEWS_TOUR_TOKEN"
 
 [bot]
 channel = "#news"
 as_user = true
-
-[endpoint]
-post_message = "/api/chat.postMessage"
