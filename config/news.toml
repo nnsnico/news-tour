@@ -1,0 +1,8 @@
+[api]
+scheme = "https"
+domain = "newsapi.org"
+endpoint = "/v2/top-headlines"
+country = "jp"
+category = "technology"
+page_size = 1
+api_key = "NEWS_API_TOKEN"
