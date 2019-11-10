@@ -22,6 +22,7 @@ pub struct Api {
     pub endpoint: String,
     pub country: String,
     pub category: String,
+    pub exclude_news_domain: Vec<String>,
     pub page_size: usize,
     pub api_key: String,
 }

@@ -4,5 +4,7 @@ domain = "newsapi.org"
 endpoint = "/v2/top-headlines"
 country = "jp"
 category = "technology"
-page_size = 1
+# I'm not interested in game and iphone.
+exclude_news_domain = ["Appbank.net", "Gamespark.jp", "4gamer.net", "Iphone-mania.jp"]
+page_size = 10
 api_key = "NEWS_API_TOKEN"
