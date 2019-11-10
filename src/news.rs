@@ -20,13 +20,13 @@ pub struct RequestParams {
 pub struct ResponseNews {
     pub status: String,
     pub total_results: u32,
-    pub articles: Vec<Articles>,
+    pub articles: Vec<Article>,
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Articles {
     pub source: HashMap<String, Option<String>>,
+pub struct Article {
     pub author: Option<String>,
     pub title: String,
     pub description: Option<String>,
