@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
 
 pub struct RequestNews {
     pub url: String,
@@ -23,10 +22,10 @@ pub struct ResponseNews {
     pub articles: Vec<Article>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
-    pub source: HashMap<String, Option<String>>,
 pub struct Article {
+    pub source: Source,
     pub author: Option<String>,
     pub title: String,
     pub description: Option<String>,
@@ -34,6 +33,12 @@ pub struct Article {
     pub url_to_image: Option<String>,
     pub published_at: Option<String>,
     pub content: Option<String>,
+}
+
+#[derive(Debug, Deserialize, Clone)]
+pub struct Source {
+    pub id: Option<String>,
+    pub name: String,
 }
 
 impl RequestNews {
@@ -44,5 +49,21 @@ impl RequestNews {
         println!("{}", url);
 
         client.get(url).query(&self.params).send()?.json()
+    }
+}
+
+impl ResponseNews {
+    pub fn filter_by_source(&self, ignore_source: Vec<String>) -> ResponseNews {
+        ResponseNews {
+            status: self.status.clone(),
+            total_results: self.total_results,
+            articles: (*self
+                .articles
+                .clone()
+                .into_iter()
+                .filter(|article| !ignore_source.contains(&article.source.name))
+                .collect::<Vec<Article>>())
+            .to_vec(),
+        }
     }
 }

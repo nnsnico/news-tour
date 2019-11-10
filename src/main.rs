@@ -1,5 +1,5 @@
 use news_tour::news;
-use news_tour::news::{RequestNews, ResponseNews};
+use news_tour::news::{Article, RequestNews, ResponseNews};
 use news_tour::settings::Settings;
 use news_tour::slack;
 use news_tour::slack::Slack;
@@ -20,15 +20,17 @@ fn main() {
     };
 
     let news_response: ResponseNews = news.get_topic(settings.api.endpoint).unwrap();
+    let filter_response: ResponseNews =
+        news_response.filter_by_source(settings.api.exclude_news_domain);
 
-    println!("news:\n {:?}", news_response);
+    println!("news:\n {:#?}", filter_response.articles[0]);
 
     let slack_params = slack::Params {
         token: env::var(&settings.slack.token_key).unwrap(),
         text: format!(
             "{}\nPowered by News API\n{}",
-            news_response.articles[0].title,
-            news_response.articles[0].url.as_ref().unwrap()
+            filter_response.articles[0].title,
+            filter_response.articles[0].url.as_ref().unwrap()
         ),
         channel: settings.bot.channel,
         as_user: settings.bot.as_user,
