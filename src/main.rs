@@ -1,5 +1,5 @@
 use news_tour::news;
-use news_tour::news::{Article, RequestNews, ResponseNews};
+use news_tour::news::{RequestNews, ResponseNews};
 use news_tour::settings::Settings;
 use news_tour::slack;
 use news_tour::slack::Slack;
