@@ -35,7 +35,7 @@ pub struct Settings {
 }
 
 impl Settings {
-    pub fn create_new() -> Result<Settings, ConfigError> {
+    pub fn create_new() -> Result<Self, ConfigError> {
         let mut s = Config::new();
         s.merge(File::with_name("config/slack"))?;
         s.merge(File::with_name("config/news"))?;

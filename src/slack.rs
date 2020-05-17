@@ -2,24 +2,27 @@ use reqwest::header;
 use serde::Serialize;
 
 pub struct Slack {
-    pub url: String,
-    pub params: Params,
+    url: String,
+    params: SlackParams,
 }
 
 #[derive(Serialize, Debug)]
-pub struct Params {
-    pub token: String,
-    pub text: String,
-    pub channel: String,
-    pub as_user: bool,
+pub struct SlackParams {
+    token: String,
+    text: String,
+    channel: String,
+    as_user: bool,
 }
 
 impl Slack {
+    pub fn new(scheme: String, domain: String, params: SlackParams) -> Self {
+        let url = format!("{}://{}", scheme, domain);
+        Slack { url, params }
+    }
+
     pub fn post_message(&self, endpoint: String) -> reqwest::Result<reqwest::Response> {
         let client = reqwest::Client::new();
         let url = reqwest::Url::parse(&format!("{}{}", self.url, endpoint)).unwrap();
-
-        println!("{}", url);
 
         client
             .post(url)
@@ -29,5 +32,16 @@ impl Slack {
             )
             .json(&self.params)
             .send()
+    }
+}
+
+impl SlackParams {
+    pub fn new(token: String, text: String, channel: String, as_user: bool) -> Self {
+        SlackParams {
+            token,
+            text,
+            channel,
+            as_user,
+        }
     }
 }
