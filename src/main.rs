@@ -4,7 +4,8 @@ use news_tour::settings::Settings;
 use news_tour::slack::*;
 use std::env;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let settings = Settings::create_new()?;
 
     let news_params = RequestParams::new(
@@ -15,7 +16,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     let news = RequestNews::new(settings.api.scheme, settings.api.domain, news_params);
 
-    let news_response: ResponseNews = news.get_topic(settings.api.endpoint)?;
+    let news_response: ResponseNews = news.get_topic(settings.api.endpoint).await?;
     let filtered_response: ResponseNews =
         news_response.filter_by_source(settings.api.exclude_news_domain);
 
@@ -27,7 +28,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     let slack = Slack::new(settings.slack.scheme, settings.slack.domain, slack_params);
 
-    slack.post_message(settings.slack.post_message_endpoint)?;
+    slack
+        .post_message(settings.slack.post_message_endpoint)
+        .await?;
 
     Ok(())
 }

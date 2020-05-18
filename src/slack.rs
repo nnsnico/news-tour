@@ -20,7 +20,7 @@ impl Slack {
         Slack { url, params }
     }
 
-    pub fn post_message(&self, endpoint: String) -> reqwest::Result<reqwest::Response> {
+    pub async fn post_message(&self, endpoint: String) -> reqwest::Result<reqwest::Response> {
         let client = reqwest::Client::new();
         let url = reqwest::Url::parse(&format!("{}{}", self.url, endpoint)).unwrap();
 
@@ -32,6 +32,7 @@ impl Slack {
             )
             .json(&self.params)
             .send()
+            .await
     }
 }
 

@@ -21,11 +21,17 @@ impl RequestNews {
         RequestNews { url, params }
     }
 
-    pub fn get_topic(&self, endpoint: String) -> reqwest::Result<ResponseNews> {
+    pub async fn get_topic(&self, endpoint: String) -> reqwest::Result<ResponseNews> {
         let client = reqwest::Client::new();
         let url = reqwest::Url::parse(&format!("{}{}", self.url, endpoint)).unwrap();
 
-        client.get(url).query(&self.params).send()?.json()
+        client
+            .get(url)
+            .query(&self.params)
+            .send()
+            .await?
+            .json()
+            .await
     }
 }
 
